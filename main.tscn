@@ -1,0 +1,47 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://main.gd" type="Script" id=1]
+[ext_resource path="res://individuals manager.gd" type="Script" id=2]
+[ext_resource path="res://individuals/individual.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CubeMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+params_diffuse_mode = 1
+albedo_color = Color( 1, 0.556863, 0.556863, 1 )
+metallic = 0.91
+
+[sub_resource type="ProceduralSky" id=3]
+sky_top_color = Color( 0.0823529, 0.0862745, 0.0901961, 1 )
+sky_horizon_color = Color( 0.235294, 0.262745, 0.286275, 1 )
+
+[sub_resource type="Environment" id=4]
+background_mode = 2
+background_sky = SubResource( 3 )
+
+[node name="main" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="club" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="club"]
+transform = Transform( -0.364734, 0.411666, 0, -0.243257, -0.215525, 0, 0, 0, 0.325, 1.8783, 0.833197, 1.13753 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="Camera" type="Camera" parent="club"]
+transform = Transform( 1, 0, 0, 0, 0.957414, 0.288719, 0, -0.288719, 0.957414, 2.04145, 0.950392, 3.6236 )
+fov = 68.1183
+
+[node name="OmniLight" type="OmniLight" parent="club"]
+omni_range = 8.22777
+
+[node name="individuals" type="Spatial" parent="club"]
+script = ExtResource( 2 )
+
+[node name="individual" parent="club/individuals" instance=ExtResource( 3 )]
+
+[node name="individual2" parent="club/individuals" instance=ExtResource( 3 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="club"]
+environment = SubResource( 4 )
