@@ -1,8 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://individuals manager.gd" type="Script" id=2]
 [ext_resource path="res://individuals/individual.tscn" type="PackedScene" id=3]
+[ext_resource path="res://parser.gd" type="Script" id=4]
+[ext_resource path="res://requests/get users.gd" type="Script" id=5]
+[ext_resource path="res://club.gd" type="Script" id=6]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -23,6 +26,7 @@ background_sky = SubResource( 3 )
 script = ExtResource( 1 )
 
 [node name="club" type="Spatial" parent="."]
+script = ExtResource( 6 )
 
 [node name="MeshInstance" type="MeshInstance" parent="club"]
 transform = Transform( -0.364734, 0.411666, 0, -0.243257, -0.215525, 0, 0, 0, 0.325, 1.8783, 0.833197, 1.13753 )
@@ -38,10 +42,41 @@ omni_range = 8.22777
 
 [node name="individuals" type="Spatial" parent="club"]
 script = ExtResource( 2 )
+individual_template = ExtResource( 3 )
 
-[node name="individual" parent="club/individuals" instance=ExtResource( 3 )]
+[node name="yassin" parent="club/individuals" instance=ExtResource( 3 )]
 
-[node name="individual2" parent="club/individuals" instance=ExtResource( 3 )]
+[node name="sacha" parent="club/individuals" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.16917, 0, 0 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="club"]
 environment = SubResource( 4 )
+
+[node name="parser" type="Node" parent="."]
+script = ExtResource( 4 )
+test_json = "[
+  {
+    \"id\": 0,
+    \"name\": \"User's name\",
+    \"money\": 0,
+    \"satisfaction\": 0,
+    \"bizarre_alluring\": 0,
+    \"introvert_exuberant\": 0,
+    \"perceptions_id\": [0, 0, 0, 0, 0, 0]
+  },
+  {
+    \"id\": 0,
+    \"name\": \"User's name\",
+    \"money\": 0,
+    \"satisfaction\": 0,
+    \"bizarre_alluring\": 0,
+    \"introvert_exuberant\": 0,
+    \"perceptions_id\": [0, 0, 0, 0, 0, 0]
+  }
+]"
+
+[node name="requests" type="Node" parent="."]
+
+[node name="get users" type="HTTPRequest" parent="requests"]
+script = ExtResource( 5 )
+[connection signal="request_completed" from="requests/get users" to="requests/get users" method="_on_request_completed"]
