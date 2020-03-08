@@ -25,10 +25,6 @@ material/0 = null
 
 [node name="others" type="Node" parent="."]
 
-[node name="debug" type="Label" parent="."]
-margin_right = 40.0
-margin_bottom = 14.0
-
 [node name="get perceptions" type="HTTPRequest" parent="."]
 script = ExtResource( 3 )
 

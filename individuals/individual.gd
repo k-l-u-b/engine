@@ -19,19 +19,24 @@ var state
 
 var self_perception
 
-
 func start():
 	p_bonus_bizarre_alluring = 0
 	p_bonus_introvert_exuberant = 0
 	pick_activity()
+
+func init(id, name, money, satisfaction, bizarre_alluring, introvert_exuberant):
+	self.id = int(id)
+	self.name = name
+	self.money = money
+	self.satisfaction = satisfaction
+	self.bizarre_alluring = bizarre_alluring
+	self.introvert_exuberant = introvert_exuberant
 
 func generate_stats():
 	satisfaction = int(rand_range(0, 100))
 	
 	bizarre_alluring = int(rand_range(-100, 100))
 	introvert_exuberant = int(rand_range(-100, 100))
-	
-	
 
 func generate_relationships(individuals):
 	for i in individuals:
@@ -41,7 +46,30 @@ func generate_relationships(individuals):
 		i_node.generate_stats(i)
 		others.add_child(i_node)
 
+func add_relationship(target_id, p_bizarre_alluring, p_introvert_exuberant):
+	var i_node = null
+	
+	for c in others.get_children():
+		if c.target_id == target_id:
+			i_node = c
+	
+	if i_node:
+		i_node.update(p_bizarre_alluring, p_introvert_exuberant)
+	else:
+		i_node = perceived_individual_template.instance()
+		i_node.init(target_id, p_bizarre_alluring, p_introvert_exuberant)
+		print(name)
+		others.add_child(i_node)
+	
+	if target_id == self.id:
+		self_perception = i_node
+	
+
+func update_relationship(relationship_node, p_bizarre_alluring, p_introvert_exuberant):
+	relationship_node.update(p_bizarre_alluring, p_introvert_exuberant)
+
 func pick_activity():
+	return
 	var activities = []
 	var probabilities = []
 	

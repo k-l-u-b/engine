@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
-[ext_resource path="res://individuals manager.gd" type="Script" id=2]
+[ext_resource path="res://individuals/individuals manager.gd" type="Script" id=2]
 [ext_resource path="res://individuals/individual.tscn" type="PackedScene" id=3]
 [ext_resource path="res://parser.gd" type="Script" id=4]
 [ext_resource path="res://requests/get users.gd" type="Script" id=5]
@@ -44,11 +44,6 @@ omni_range = 8.22777
 script = ExtResource( 2 )
 individual_template = ExtResource( 3 )
 
-[node name="yassin" parent="club/individuals" instance=ExtResource( 3 )]
-
-[node name="sacha" parent="club/individuals" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.16917, 0, 0 )
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="club"]
 environment = SubResource( 4 )
 
@@ -79,4 +74,5 @@ test_json = "[
 
 [node name="get users" type="HTTPRequest" parent="requests"]
 script = ExtResource( 5 )
+[connection signal="clubber_parsed" from="requests/get users" to="requests/get users" method="on_clubber_parsed"]
 [connection signal="request_completed" from="requests/get users" to="requests/get users" method="_on_request_completed"]

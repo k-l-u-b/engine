@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Constants="*res://constants.gd"
+API="*res://api.gd"
 
 [rendering]
 
