@@ -1,7 +1,6 @@
 extends Node
 
-var time_scale = 0.01	# low => faster
-var drinks = ["beer", "moscow mule"]
+var time_scale = 1	# low => faster
+#var time_scale = 0.01	# low => faster
 
-func random_drink():
-	return drinks[randi() % drinks.size()]
+

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://individuals/individuals manager.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://parser.gd" type="Script" id=4]
 [ext_resource path="res://requests/get users.gd" type="Script" id=5]
 [ext_resource path="res://club.gd" type="Script" id=6]
+[ext_resource path="res://encounters/encounter.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -22,6 +23,13 @@ sky_horizon_color = Color( 0.235294, 0.262745, 0.286275, 1 )
 background_mode = 2
 background_sky = SubResource( 3 )
 
+[sub_resource type="PlaneMesh" id=5]
+
+[sub_resource type="Skin" id=6]
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_color = Color( 0.466667, 0.466667, 0.466667, 1 )
+
 [node name="main" type="Spatial"]
 script = ExtResource( 1 )
 
@@ -33,12 +41,14 @@ transform = Transform( -0.364734, 0.411666, 0, -0.243257, -0.215525, 0, 0, 0, 0.
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
-[node name="Camera" type="Camera" parent="club"]
-transform = Transform( 1, 0, 0, 0, 0.957414, 0.288719, 0, -0.288719, 0.957414, 2.04145, 0.950392, 3.6236 )
+[node name="camera" type="Camera" parent="club"]
+transform = Transform( 1, 0, 0, 0, 0.976851, 0.213922, 0, -0.213922, 0.976851, 2.52573, 3.48173, 3.92476 )
 fov = 68.1183
 
-[node name="OmniLight" type="OmniLight" parent="club"]
-omni_range = 8.22777
+[node name="light" type="OmniLight" parent="club"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.69323, 0 )
+light_color = Color( 0.159146, 0.449219, 0.0543976, 1 )
+omni_range = 20.0
 
 [node name="individuals" type="Spatial" parent="club"]
 script = ExtResource( 2 )
@@ -46,6 +56,14 @@ individual_template = ExtResource( 3 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="club"]
 environment = SubResource( 4 )
+
+[node name="floor" type="MeshInstance" parent="club"]
+transform = Transform( 16.7094, 0, 0, 0, 1, 0, 0, 0, 9.9688, 0, 0, 0 )
+mesh = SubResource( 5 )
+skin = SubResource( 6 )
+material/0 = SubResource( 7 )
+
+[node name="encounter tree" parent="club" instance=ExtResource( 7 )]
 
 [node name="parser" type="Node" parent="."]
 script = ExtResource( 4 )

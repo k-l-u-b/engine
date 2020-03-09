@@ -14,7 +14,7 @@ func start():
 	if target == null:
 		target = others.get_child(randi() % others.get_child_count()).target
 	
-	print("user ", user.name, " likes the looks of ", target.name, " and is talking to them")
+#	print("user ", user.name, " likes the looks of ", target.name, " and is talking to them")
 
 func get_probability():
 	var p = user.introvert_exuberant + user.self_perception.p_bizarre_alluring

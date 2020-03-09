@@ -11,7 +11,7 @@ func _ready():
 	if error != OK:
 		push_error("An error occurred in the HTTP request.")
 
-func _on_request_completed(result, response_code, headers, body):	
+func _on_request_completed(result, response_code, headers, body):
 	var response = JSON.parse(body.get_string_from_utf8())
 
 	clubbers_data = response.result
@@ -21,9 +21,11 @@ func _on_request_completed(result, response_code, headers, body):
 			int(clubber.id), 
 			clubber.name, 
 			clubber.money, 
-			clubber.satisfaction, 
 			int(clubber.bizarre_alluring), 
-			int(clubber.introvert_exuberant))
+			int(clubber.introvert_exuberant),
+			int(clubber.anxious_satisfied))
+		
+		yield(get_tree().create_timer(1.0), "timeout")
 
 func on_clubber_parsed():
 	if clubbers_data.size() == 0:

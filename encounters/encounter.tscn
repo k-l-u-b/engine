@@ -1,0 +1,80 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://encounters/outcome.gd" type="Script" id=1]
+[ext_resource path="res://encounters/decision.gd" type="Script" id=2]
+[ext_resource path="res://encounters/actions/pick random solo clubber.gd" type="Script" id=3]
+
+[node name="encounter tree" type="Node"]
+
+[node name="start" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="pick someone random" type="Node" parent="start"]
+script = ExtResource( 1 )
+trait_1 = "introvert_exuberant"
+trait_2 = "bizarre_alluring"
+weighting = -0.14
+next_node = NodePath("..")
+
+[node name="pick someone known" type="Node" parent="start"]
+script = ExtResource( 1 )
+trait_1 = "introvert_exuberant"
+trait_1_positive = false
+trait_2 = "anxious_satisfied"
+trait_2_positive = false
+weighting = 0.24
+next_node = NodePath("..")
+
+[node name="drink alone" type="Node" parent="start"]
+script = ExtResource( 1 )
+trait_1 = "introvert_exuberant"
+trait_1_positive = false
+trait_2 = "bizarre_alluring"
+trait_2_positive = false
+weighting = -0.16
+effect_on_actor = {
+"anxious_satisfied": 10.0,
+"bizarre_alluring": 0.0,
+"introvert_exuberant": 15.0,
+"p_anxious_satisfied": 0.0,
+"p_bizarre_alluring": 0.0,
+"p_introvert_exuberant": 0.0
+}
+next_node = NodePath("..")
+
+[node name="toilet" type="Node" parent="start"]
+script = ExtResource( 1 )
+trait_1 = "anxious_satisfied"
+trait_1_positive = false
+trait_2 = "introvert_exuberant"
+trait_2_positive = false
+weighting = 0.24
+effect_on_actor = {
+"anxious_satisfied": 10.0,
+"bizarre_alluring": -10.0,
+"introvert_exuberant": 0.0,
+"p_anxious_satisfied": 0.0,
+"p_bizarre_alluring": 0.0,
+"p_introvert_exuberant": 0.0
+}
+next_node = NodePath("..")
+
+[node name="dance alone" type="Node" parent="start"]
+script = ExtResource( 1 )
+trait_1 = "introvert_exuberant"
+trait_2 = "anxious_satisfied"
+weighting = 0.18
+effect_on_actor = {
+"anxious_satisfied": 0.0,
+"bizarre_alluring": 10.0,
+"introvert_exuberant": 0.0,
+"p_anxious_satisfied": 0.0,
+"p_bizarre_alluring": 0.0,
+"p_introvert_exuberant": 0.0
+}
+next_node = NodePath("..")
+
+[node name="actions" type="Node" parent="."]
+
+[node name="pick random solo clubber" type="Node" parent="actions"]
+script = ExtResource( 3 )

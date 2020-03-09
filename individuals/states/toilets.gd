@@ -1,7 +1,7 @@
 extends "IndividualState.gd"
 
 func start():
-	print("user ", user.name, " is gone to the toilets")
+#	print("user ", user.name, " is gone to the toilets")
 	
 	user.self_perception.p_introvert_exuberant -= 20
 

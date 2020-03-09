@@ -3,106 +3,81 @@ extends Spatial
 export (PackedScene) var perceived_individual_template
 
 onready var others = $others
-onready var states = $states
 onready var state_timer = $"state timer"
+onready var life = $life
 
 var id						
-var satisfaction			# 0-100
 var money					
 var bizarre_alluring		# -100 ; 100
 var introvert_exuberant		# -100 ; 100
+var anxious_satisfied		# -100 ; 100
 
-var p_bonus_bizarre_alluring	# -100 ; 100
-var p_bonus_introvert_exuberant	# -100 ; 100
-
-var state
-
-var self_perception
+var current_encounter
 
 func start():
-	p_bonus_bizarre_alluring = 0
-	p_bonus_introvert_exuberant = 0
-	pick_activity()
+	state_timer.wait_time = rand_range(2, 5)
+	state_timer.start()
+#	start_activity()
 
-func init(id, name, money, satisfaction, bizarre_alluring, introvert_exuberant):
+func init(id, name, money, bizarre_alluring, introvert_exuberant, anxious_satisfied):
 	self.id = int(id)
 	self.name = name
 	self.money = money
-	self.satisfaction = satisfaction
 	self.bizarre_alluring = bizarre_alluring
 	self.introvert_exuberant = introvert_exuberant
-
-func generate_stats():
-	satisfaction = int(rand_range(0, 100))
+	self.anxious_satisfied = anxious_satisfied
 	
-	bizarre_alluring = int(rand_range(-100, 100))
-	introvert_exuberant = int(rand_range(-100, 100))
+	$"get perceptions".init()
+#	current_encounter = $"../../encounter tree/start"
 
 func generate_relationships(individuals):
 	for i in individuals:
-		var i_node = perceived_individual_template.instance()
-		if i == self:
-			self_perception = i_node
-		i_node.generate_stats(i)
-		others.add_child(i_node)
+		generate_relationship(i)
+
+func generate_relationship(target):
+	var i_node = perceived_individual_template.instance()
+	i_node.generate_stats(target)
+	others.add_child(i_node)
+	return i_node
 
 func add_relationship(target_id, p_bizarre_alluring, p_introvert_exuberant):
-	var i_node = null
-	
-	for c in others.get_children():
-		if c.target_id == target_id:
-			i_node = c
+	var i_node = find_relationship_with(target_id)
 	
 	if i_node:
 		i_node.update(p_bizarre_alluring, p_introvert_exuberant)
 	else:
 		i_node = perceived_individual_template.instance()
 		i_node.init(target_id, p_bizarre_alluring, p_introvert_exuberant)
-		print(name)
 		others.add_child(i_node)
-	
-	if target_id == self.id:
-		self_perception = i_node
-	
 
 func update_relationship(relationship_node, p_bizarre_alluring, p_introvert_exuberant):
 	relationship_node.update(p_bizarre_alluring, p_introvert_exuberant)
 
-func pick_activity():
-	return
-	var activities = []
-	var probabilities = []
-	
-	var sum = 0
-	for s in states.get_children():
-		var prob = s.get_probability()
-		if prob <= 0:
-			continue
-		activities.append(s)
-		probabilities.append(prob)
-		sum += int(prob)
-	
-	print(name, " is deciding what to do...")
-	print("probability repartition : ", probabilities)
-	
-	if state:
-		state.stop()
-	
-	var rand = randi() % sum
-	var i = 0
-	for val in probabilities:
-		if rand < val:
-			state = activities[i]
-		else:
-			rand -= val
-			i += 1
-	
-#	state = states.get_child(randi() % states.get_children().size())
-	state.init(self, state_timer)
-#	print(name, " started ", state.name)
-	state.start()
-	
+func find_relationship_with(target_id):
+	for c in others.get_children():
+		if c.target_id == target_id:
+			return c
+
+func start_activity():
+	current_encounter == current_encounter.execute(self, null)
+	state_timer.wait_time = rand_range(5, 100)
 	state_timer.start()
+
+# returns a relationship
+func pick_target_known():
+	if others.get_child_count() == 0:
+		return null
+	else:
+		var i = randi() % others.get_child_count()
+		return others.get_child(i)
+
+# returns a relationship
+func pick_target_random():
+	var target = $"..".pick_random_clubber()
+	var relationship = find_relationship_with(target.id)
+	if not relationship:
+		relationship = generate_relationship(target)
+	return relationship
 
 func discuss():
 	pass
@@ -119,4 +94,12 @@ func toilets():
 	pass
 
 func _on_state_timer_timeout():
-	pick_activity()
+	if current_encounter == null:
+		current_encounter = $"../../encounter tree/start"
+#	elif current_encounter == $"../../encounter tree/start":
+#		start_activity()
+	else:
+		current_encounter.end(self, null)
+		current_encounter = current_encounter.get_next_encounter()
+	
+	start_activity()
