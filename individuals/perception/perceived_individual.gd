@@ -12,9 +12,9 @@ func init(target_id, p_bizarre_alluring, p_introvert_exuberant):
 	self.p_bizarre_alluring = p_bizarre_alluring
 	self.p_introvert_exuberant = p_introvert_exuberant
 
-func update(p_bizarre_alluring, p_introvert_exuberant):
-	self.p_bizarre_alluring = p_bizarre_alluring
-	self.p_introvert_exuberant = p_introvert_exuberant
+func update(_p_bizarre_alluring, _p_introvert_exuberant):
+	self.p_bizarre_alluring = _p_bizarre_alluring
+	self.p_introvert_exuberant = _p_introvert_exuberant
 
 func generate_stats(ref):
 	target = ref

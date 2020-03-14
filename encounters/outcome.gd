@@ -42,7 +42,9 @@ export var effect_on_target = {
 	"p_anxious_satisfied": 0.0
 }
 
-export (NodePath) var next_node
+export (String) var pick_target
+export (NodePath) var next_node_on_success
+export (NodePath) var next_node_on_failure
 
 
 #func start():
@@ -103,7 +105,15 @@ func apply_effects(actor, target):
 
 func end(actor, target):
 	apply_effects(actor, target)
+	return pick_target
+
+func test_for_success():
+	return true
 
 func get_next_encounter():
-	var follow_up = get_node(next_node)
+	var follow_up
+	follow_up = get_node(next_node_on_success)
+	
+	
+	
 	return follow_up

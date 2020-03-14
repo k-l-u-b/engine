@@ -7,13 +7,16 @@ var clubbers_data
 signal clubber_parsed
 
 func _ready():
-	var error = request(str(API.url, "/clubbers"))
+	do_request()
+
+func do_request():
+	var request_url = str(API.url, "/clubbers")
+	var error = request(request_url)
 	if error != OK:
-		push_error("An error occurred in the HTTP request.")
+		push_error("An error occurred in the HTTP request: error " + error)
 
 func _on_request_completed(result, response_code, headers, body):
 	var response = JSON.parse(body.get_string_from_utf8())
-
 	clubbers_data = response.result
 	
 	for clubber in clubbers_data:

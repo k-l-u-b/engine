@@ -5,7 +5,7 @@
 [ext_resource path="res://individuals/individual.tscn" type="PackedScene" id=3]
 [ext_resource path="res://parser.gd" type="Script" id=4]
 [ext_resource path="res://requests/get users.gd" type="Script" id=5]
-[ext_resource path="res://club.gd" type="Script" id=6]
+[ext_resource path="res://club/club.gd" type="Script" id=6]
 [ext_resource path="res://encounters/encounter.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CubeMesh" id=1]

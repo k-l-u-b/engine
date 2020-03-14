@@ -12,12 +12,16 @@ var bizarre_alluring		# -100 ; 100
 var introvert_exuberant		# -100 ; 100
 var anxious_satisfied		# -100 ; 100
 
-var current_encounter
+var current_decision
+var current_outcome
+
+var target
 
 func start():
 	state_timer.wait_time = rand_range(2, 5)
 	state_timer.start()
-#	start_activity()
+	target = null
+	start_activity()
 
 func init(id, name, money, bizarre_alluring, introvert_exuberant, anxious_satisfied):
 	self.id = int(id)
@@ -28,7 +32,7 @@ func init(id, name, money, bizarre_alluring, introvert_exuberant, anxious_satisf
 	self.anxious_satisfied = anxious_satisfied
 	
 	$"get perceptions".init()
-#	current_encounter = $"../../encounter tree/start"
+	current_decision = $"../../encounter tree/start"
 
 func generate_relationships(individuals):
 	for i in individuals:
@@ -59,7 +63,8 @@ func find_relationship_with(target_id):
 			return c
 
 func start_activity():
-	current_encounter == current_encounter.execute(self, null)
+	current_outcome = current_decision.execute(self, target)
+	
 	state_timer.wait_time = rand_range(5, 100)
 	state_timer.start()
 
@@ -94,12 +99,19 @@ func toilets():
 	pass
 
 func _on_state_timer_timeout():
-	if current_encounter == null:
-		current_encounter = $"../../encounter tree/start"
-#	elif current_encounter == $"../../encounter tree/start":
+	if current_outcome == null:
+		current_outcome = $"../../encounter tree/start"
+#	elif current_outcome == $"../../encounter tree/start":
 #		start_activity()
-	else:
-		current_encounter.end(self, null)
-		current_encounter = current_encounter.get_next_encounter()
+	
+	var pick_target = current_outcome.end(self, target)
+	
+	current_decision = current_outcome.get_next_encounter()
+	current_outcome = null
+
+	if pick_target == "random":
+		target = pick_target_random()
+	elif pick_target == "known":
+		target = pick_target_known()
 	
 	start_activity()

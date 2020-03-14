@@ -2,7 +2,7 @@
 
 [ext_resource path="res://encounters/outcome.gd" type="Script" id=1]
 [ext_resource path="res://encounters/decision.gd" type="Script" id=2]
-[ext_resource path="res://encounters/actions/pick random solo clubber.gd" type="Script" id=3]
+[ext_resource path="res://encounters/outcome effect.gd" type="Script" id=3]
 
 [node name="encounter tree" type="Node"]
 
@@ -14,7 +14,16 @@ script = ExtResource( 1 )
 trait_1 = "introvert_exuberant"
 trait_2 = "bizarre_alluring"
 weighting = -0.14
-next_node = NodePath("..")
+pick_target = "random"
+next_node_on_success = NodePath("../../with someone")
+
+[node name="success" type="Node" parent="start/pick someone random"]
+script = ExtResource( 3 )
+next_node = NodePath("../../../with someone")
+
+[node name="failure" type="Node" parent="start/pick someone random"]
+script = ExtResource( 3 )
+next_node = NodePath("../..")
 
 [node name="pick someone known" type="Node" parent="start"]
 script = ExtResource( 1 )
@@ -23,7 +32,8 @@ trait_1_positive = false
 trait_2 = "anxious_satisfied"
 trait_2_positive = false
 weighting = 0.24
-next_node = NodePath("..")
+pick_target = "known"
+next_node_on_success = NodePath("../../with someone")
 
 [node name="drink alone" type="Node" parent="start"]
 script = ExtResource( 1 )
@@ -40,7 +50,7 @@ effect_on_actor = {
 "p_bizarre_alluring": 0.0,
 "p_introvert_exuberant": 0.0
 }
-next_node = NodePath("..")
+next_node_on_success = NodePath("..")
 
 [node name="toilet" type="Node" parent="start"]
 script = ExtResource( 1 )
@@ -57,7 +67,7 @@ effect_on_actor = {
 "p_bizarre_alluring": 0.0,
 "p_introvert_exuberant": 0.0
 }
-next_node = NodePath("..")
+next_node_on_success = NodePath("..")
 
 [node name="dance alone" type="Node" parent="start"]
 script = ExtResource( 1 )
@@ -72,9 +82,71 @@ effect_on_actor = {
 "p_bizarre_alluring": 0.0,
 "p_introvert_exuberant": 0.0
 }
-next_node = NodePath("..")
+next_node_on_success = NodePath("..")
 
-[node name="actions" type="Node" parent="."]
+[node name="with someone" type="Node" parent="."]
+script = ExtResource( 2 )
 
-[node name="pick random solo clubber" type="Node" parent="actions"]
-script = ExtResource( 3 )
+[node name="chat" type="Node" parent="with someone"]
+script = ExtResource( 1 )
+trait_1 = "p_introvert_exuberant"
+trait_1_positive = false
+trait_2 = "p_bizarre_alluring"
+effect_on_actor = {
+"anxious_satisfied": 10.0,
+"bizarre_alluring": 0.0,
+"introvert_exuberant": 0.0,
+"p_anxious_satisfied": 10.0,
+"p_bizarre_alluring": 0.0,
+"p_introvert_exuberant": 0.0
+}
+next_node_on_success = NodePath("..")
+next_node_on_failure = NodePath("../../start")
+
+[node name="dance" type="Node" parent="with someone"]
+script = ExtResource( 1 )
+trait_1 = "p_introvert_exuberant"
+trait_2 = "bizarre_alluring"
+effect_on_actor = {
+"anxious_satisfied": 15.0,
+"bizarre_alluring": 0.0,
+"introvert_exuberant": 0.0,
+"p_anxious_satisfied": 0.0,
+"p_bizarre_alluring": 15.0,
+"p_introvert_exuberant": 0.0
+}
+next_node_on_success = NodePath("..")
+next_node_on_failure = NodePath("../../start")
+
+[node name="drink" type="Node" parent="with someone"]
+script = ExtResource( 1 )
+trait_1 = "introvert_exuberant"
+trait_1_positive = false
+trait_2 = "p_anxious_satisfied"
+trait_2_positive = false
+effect_on_actor = {
+"anxious_satisfied": 5.0,
+"bizarre_alluring": 0.0,
+"introvert_exuberant": 15.0,
+"p_anxious_satisfied": 0.0,
+"p_bizarre_alluring": 0.0,
+"p_introvert_exuberant": 10.0
+}
+next_node_on_success = NodePath("..")
+next_node_on_failure = NodePath("../../start")
+
+[node name="ignore" type="Node" parent="with someone"]
+script = ExtResource( 1 )
+trait_1 = "p_bizarre_alluring"
+trait_1_positive = false
+trait_2_positive = false
+effect_on_actor = {
+"anxious_satisfied": -10.0,
+"bizarre_alluring": 0.0,
+"introvert_exuberant": 0.0,
+"p_anxious_satisfied": 0.0,
+"p_bizarre_alluring": 0.0,
+"p_introvert_exuberant": 0.0
+}
+next_node_on_success = NodePath("..")
+next_node_on_failure = NodePath("../../start")
