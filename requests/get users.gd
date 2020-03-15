@@ -19,6 +19,11 @@ func _on_request_completed(result, response_code, headers, body):
 	var response = JSON.parse(body.get_string_from_utf8())
 	clubbers_data = response.result
 	
+	if clubbers_data == null:
+		print("Request failed, trying again")
+		do_request()
+		return
+	
 	for clubber in clubbers_data:
 		individuals_manager.add_individual(\
 			int(clubber.id), 

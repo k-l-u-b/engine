@@ -13,6 +13,6 @@ func decide(actor, target):
 			max_inclination = c_inclination
 			outcome = c
 	
-	print(actor.name + " is doing: " + outcome.name)
+	print(actor.name + " " + outcome.descriptor)
 	
 	return outcome

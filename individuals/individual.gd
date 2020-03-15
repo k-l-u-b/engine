@@ -101,17 +101,10 @@ func toilets():
 func _on_state_timer_timeout():
 	if current_outcome == null:
 		current_outcome = $"../../encounter tree/start"
-#	elif current_outcome == $"../../encounter tree/start":
-#		start_activity()
 	
-	var pick_target = current_outcome.end(self, target)
+	var succcess = current_outcome.end(self, target)
 	
-	current_decision = current_outcome.get_next_encounter()
+	current_decision = current_outcome.get_next_encounter(succcess)
 	current_outcome = null
-
-	if pick_target == "random":
-		target = pick_target_random()
-	elif pick_target == "known":
-		target = pick_target_known()
 	
 	start_activity()
